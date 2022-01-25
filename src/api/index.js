@@ -25,3 +25,23 @@ export const getPlacesData = async (type, sw, ne) =>
     console.log(error);
   }
 }
+
+export const getWeatherData = async(lat, lng) =>
+{
+  try
+  {
+    const { data } = await axios.get(`https://community-open-weather-map.p.rapidapi.com/find`,
+    {
+      params: {lat: lat, lon: lng},
+      headers: {
+        'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
+        'x-rapidapi-key': '394334c6a5mshf41a9a7a42290dbp1a5126jsnaf94a6d526ab'
+      }
+    })
+    return data
+  }
+  catch(error)
+  {
+    console.log(error);
+  }
+}

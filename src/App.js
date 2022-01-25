@@ -5,11 +5,12 @@ import Grid from '@material-ui/core/Grid';
 import Header from './components/Header/Header';
 import List from './components/List/List';
 import Map from './components/Map/Map';
-import {getPlacesData} from './api';
+import {getPlacesData, getWeatherData} from './api';
 
 const App = () => 
 {
   const [places, setPlaces] = useState([]);
+  const [weatherData, setWeatherData] = useState([]);
   const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [childClicked, setChildClicked] = useState(null);
   const [coordinates, setCoordinates] = useState({});
@@ -42,6 +43,11 @@ const App = () =>
       if(bounds.sw && bounds.ne)
       {
         setLoading(true);
+
+        getWeatherData(coordinates.lat, coordinates.lng).then(data =>
+        {
+          setWeatherData(data);
+        })
 
         getPlacesData(type, bounds.sw, bounds.ne).then(data => 
         {
@@ -78,6 +84,7 @@ const App = () =>
             coordinates={coordinates}
             places={filteredPlaces.length ? filteredPlaces : places}
             setChildClicked={setChildClicked}
+            weatherData={weatherData}
           />
         </Grid>
       </Grid>     
