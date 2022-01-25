@@ -39,21 +39,24 @@ const App = () =>
 
   useEffect(()=>
   {
-      setLoading(true);
-
-      getPlacesData(type, bounds.sw, bounds.ne).then(data => 
+      if(bounds.sw && bounds.ne)
       {
-        // console.log(data);
-        setPlaces(data);
-        setFilteredPlaces([])
-        setLoading(false);  
-      })
-  }, [type, coordinates, bounds])
+        setLoading(true);
+
+        getPlacesData(type, bounds.sw, bounds.ne).then(data => 
+        {
+          // console.log(data);
+          setPlaces(data?.filter(place => place.name && place.num_reviews > 0 )); // get places that have names and reviews only
+          setFilteredPlaces([])
+          setLoading(false);  
+        })
+      }
+  }, [type, bounds])
 
   return (
     <React.Fragment>
       <CssBaseline/> 
-      <Header />
+      <Header setCoordinates={setCoordinates}/>
 
       <Grid container spacing={3} style={{width: "100%"}}> {/* Spacing = padding between items (3 * 8 = 24px) */} {/* Grid is a 12 column system (in width) */}
         <Grid item xs={12} md={4}> 
